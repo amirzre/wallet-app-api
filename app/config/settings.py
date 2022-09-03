@@ -45,8 +45,11 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     # Local App
     'core.apps.CoreConfig',
+    'user.apps.UserConfig',
     # Third-Party App
-]
+    'rest_framework',
+    'rest_framework.authtoken',
+]   
 
 MIDDLEWARE = [
     'django.middleware.security.SecurityMiddleware',
@@ -140,3 +143,9 @@ MEDIA_ROOT = '/vol/web/media'
 # https://docs.djangoproject.com/en/3.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': [
+        'rest_framework.authentication.TokenAuthentication',
+    ],
+}
