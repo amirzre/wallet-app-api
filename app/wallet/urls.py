@@ -4,6 +4,9 @@ from wallet import views
 
 
 router = DefaultRouter()
+router.register('transactions',
+                views.TransactionViewSet,
+                basename='transactions')
 
 app_name = 'wallet'
 
