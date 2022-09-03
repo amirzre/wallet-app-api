@@ -1,4 +1,3 @@
-from django.contrib.auth import get_user_model
 from rest_framework import status
 from rest_framework import viewsets, mixins
 from rest_framework.authentication import TokenAuthentication
@@ -55,3 +54,48 @@ class UserBalanceViewSet(BaseViewSet):
     """Manage user balance in database"""
     serializer_class = UserBalanceSerializer
     queryset = UserBalance.objects.all()
+
+
+class TransferTransactionViewSet(viewsets.ModelViewSet):
+    """Manage transfer transaction in database"""
+    authentication_classes = (TokenAuthentication,)
+    permission_classes = (IsAuthenticated,)
+    serializer_class = TransferTransactionSerializer
+    queryset = TransferTransaction.objects.all()
+
+    def get_queryset(self):
+        """Retrieve the transfer transaction for the authenticated user"""
+        return self.queryset.select_related(
+            'sender_transaction__user'
+        )
+
+    def get_serializer_class(self):
+        """Return appropriate serializer class"""
+        if self.action == 'retrieve':
+            return TransferTransactionDetailSerializer
+        return self.serializer_class
+
+
+    def create(self, request, *args, **kwargs):
+        serializer = TransferTransactionSerializer(data=request.data)
+        if serializer.is_valid(raise_exception=True):
+            TransferTransaction.transfer(
+                sender=serializer.validated_data.get(
+                    'sender_transaction'
+                )['user'],
+                receiver=serializer.validated_data.get(
+                    'receiver_transaction'
+                )['user'],
+                amount=serializer.validated_data['sender_transaction']['amount']
+            )
+            UserBalance.record_user_balance(
+                user=self.request.user
+            )
+            return Response(
+                data={'success': serializer.data},
+                status=status.HTTP_201_CREATED
+            )
+        return Response(
+            data={'error': serializer.errors},
+            status=status.HTTP_400_BAD_REQUEST
+        )

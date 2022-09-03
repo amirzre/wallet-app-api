@@ -7,7 +7,7 @@ from wallet.models import Transaction
 
 
 TRANSFER_TRANSACTION_URL = reverse(
-    'wallet:transfer-transaction-list'
+    'wallet:transfer-list'
 )
 
 

@@ -10,6 +10,10 @@ router.register('transactions',
 router.register('userbalance',
                 views.UserBalanceViewSet,
                 basename='userbalance')
+router.register('transfer',
+                views.TransferTransactionViewSet,
+                basename='transfer-transaction')
+
 
 app_name = 'wallet'
 
