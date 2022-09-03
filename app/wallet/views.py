@@ -49,3 +49,9 @@ class TransactionViewSet(BaseViewSet):
         user = request.user
         balance = Transaction.get_user_balance(user)
         return Response({'user balance': balance})
+
+
+class UserBalanceViewSet(BaseViewSet):
+    """Manage user balance in database"""
+    serializer_class = UserBalanceSerializer
+    queryset = UserBalance.objects.all()

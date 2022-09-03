@@ -7,6 +7,9 @@ router = DefaultRouter()
 router.register('transactions',
                 views.TransactionViewSet,
                 basename='transactions')
+router.register('userbalance',
+                views.UserBalanceViewSet,
+                basename='userbalance')
 
 app_name = 'wallet'
 
