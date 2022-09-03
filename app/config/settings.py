@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     # Local App
     'core.apps.CoreConfig',
     'user.apps.UserConfig',
+    'wallet.apps.WalletConfig',
     # Third-Party App
     'rest_framework',
     'rest_framework.authtoken',
